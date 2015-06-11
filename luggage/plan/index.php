@@ -8,6 +8,8 @@
 
 //uncomment sms code before running
 require_once ('../db.inc.php');
+
+
 require('function.php');
 
 //$uuid=$_REQUEST['uuid'];
