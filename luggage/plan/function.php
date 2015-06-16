@@ -5,6 +5,11 @@
  * Date: 6/11/2015
  * Time: 10:24 PM
  */
+
+function (){
+
+
+}
 function sms($url, $referer, $_data) {
     // convert variables array to string:
     $data = array();
