@@ -10,6 +10,25 @@ function (){
 
 
 }
+
+function userDetails($uuid){
+
+    //fetching user_id related with uuid
+    $query="select user_id from uuid where uuid='".$uuid."'";
+    $query=mysql_query($query)or die(mysql_query());
+    $result=mysql_fetch_assoc($query)or die(mysql_query());
+    //$result['user_id'];
+    //$status=$result['status'];
+    // echo $result['user_id'];
+    //fetching user details using user id from last query
+    $query="select name,phone from user where id=".$result['user_id'];
+    $query=mysql_query($query);
+    $result=mysql_fetch_assoc($query);
+    $string=$result['name']."_%_".$result['phone'];
+    return $string;
+}
+
+
 function sms($url, $referer, $_data) {
     // convert variables array to string:
     $data = array();
