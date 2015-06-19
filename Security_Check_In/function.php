@@ -117,9 +117,9 @@ function getNoOfPerson($avail,$s){
 }
 
 function checkEmergencyLane(){
-    //provides current time in min add for 30 min
+
+    //provides current time(in min)add for 30 min
     $currentTime=currentTime()+30;
-    $timeC=date('h:i:00');
     //convert the time(min form) into hour:min (after 30 min)type
     $hour=intval($currentTime/60);
     $min=$currentTime%60;
@@ -127,25 +127,8 @@ function checkEmergencyLane(){
         $min="0".$min;
     //converting string to time
     $time= date("H:i:s", strtotime("$hour:$min:00"));
-    $time_diff="45";
-    //check for next 30min ,if flight is there and all customers have already boarder or not.
-   $query="select time from flight where id=1";
-//    $query="SELECT id FROM flight WHERE time BETWEEN '".$timeC."' AND '".$time."'";
-//    echo $query;
-    $query=mysql_query($query)or die(mysql_error());
-    echo $query;
-    $result = mysql_fetch_assoc($query);
-    print_r($result);
-    echo $result['time']."<br>";
-   if($result = mysql_fetch_assoc($query)) {
-       while ($result = mysql_fetch_assoc($query)) {
-           echo "parmminder" . $result['id'];
-       }
-   }
-    else{
 
-        echo "parmidner singh";
-    }
+
   //  SELECT TIMESTAMPDIFF(MINUTE, `time`, $time) FROM `flight`
 }
 ?>
