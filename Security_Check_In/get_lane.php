@@ -12,6 +12,6 @@ require_once ('function.php');
 
 //varaible for functions
 $user_id="2";
-echo "parminder".timeGap($user_id);
+echo "Lane no".timeGap($user_id);
 
 ?>

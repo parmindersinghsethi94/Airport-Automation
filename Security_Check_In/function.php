@@ -6,7 +6,7 @@ date_default_timezone_set("Asia/Kolkata");
 
 //current time
 function currentTime(){
-    $current = date("h:i:s");
+    $current = date("H:i:s");
     $current = explode(":", $current);
     //change time into min
     $time_min = ($current[0] * 60) + ($current[1]);
@@ -96,30 +96,30 @@ function getBestLane($avail,$s){
     }
     elseif($s=='n'){
         //for noramlCase
-        $counter=0;
-        $numberList= array();
+        //$counter=0;
+       // $numberList= array();
         //numberList i am storing the number of person standing in that
         //$avail is an array contains value of different value of availble counter
-        while($avail[$counter]){
-//            echo $avail[$counter]."</br>";
-            $query="select number from security_details where id=".$avail[$counter];
-            $query=mysql_query($query)or die(mysql_error());
-            $result = mysql_fetch_assoc($query);
-            $numberList[$counter]=$result['number'];
-            $counter++;
-        }
+//        while($avail[$counter]){
+////            echo $avail[$counter]."</br>";
+//            $query="select number from security_details where id=".$avail[$counter];
+//            $query=mysql_query($query)or die(mysql_error());
+//            $result = mysql_fetch_assoc($query);
+//            $numberList[$counter]=$result['number'];
+//            $counter++;
+//        }
 
         //returns the value in case emergency lane is not availble for next 30 min
-        $return_default = $avail[array_search(min($numberList),$numberList)];
+        //$return_default = $avail[array_search(min($numberList),$numberList)];
 
 
                 //check if emergy are available
                 $return=checkEmergencyLane();
               // if sorry is not coming from the checkEmergencyLane , means some lane is availble for next noraml case customers
-                if($return != "sorry")
+//                if($return != "sorry")
                     return $return;
-                else
-                    return $return_default;
+//                else
+//                    return $return_default;
 
      }
 
@@ -146,20 +146,21 @@ function checkEmergencyLane(){
     $time=$hour.$min;
 
     //getting the current time in form of string
-    $current = date("h:i");
+    $current = date("H:i");
     $current = explode(":", $current);
     $current= $current[0].$current[1];
     //fetching id of flights in next 30min
     $query="select id from flight where time < '".$time."' and time > '".$current."'";
     $query=mysql_query($query)or die(mysql_error());
-    $result = mysql_fetch_assoc($query);
+    //$result = mysql_fetch_assoc($query);
 
-    if($result) {
+    if($query) {
         //this means there is some flight in next 30 min
         while ($result = mysql_fetch_assoc($query)) {
-            //now check the status of each customer of  that particular flight
+          //now check the status of each customer of  that particular flight
            $no+= getCustomerStatus($result['id']);
         }
+
         //in the end of while loop $no will be containing total no of person that are going to coming and having flight in next 30 min
         if($no!=0) {
             //$no --> no of pending persons for next 30 min
@@ -170,9 +171,9 @@ function checkEmergencyLane(){
             $temp = explode(":", $temp);
             $totalPersonStanding = $temp[0];
             $noOfEmergencyLane = $temp[1];
-
             //(total pending person + no standing person)/(no of emeg lane)
-            $avgCapacityOfOneEmergencyLane=($no+$totalPersonStanding)/$noOfEmergencyLane;
+            $avgCapacityOfOneEmergencyLane=intval(($no+$totalPersonStanding)/$noOfEmergencyLane);
+            echo $avgCapacityOfOneEmergencyLane;
             $averageTimeForEachLane=$avgTimeForOnePerson*$avgCapacityOfOneEmergencyLane;
             //this will tell me the average time for making that queue empty
             if($averageTimeForEachLane<30){
@@ -261,11 +262,11 @@ function getNoOfPersonStandingEmergency($noOfEmergencyLane)
         $query = "select number from security_details where id=".$noOfEmergencyLane[$counter];
         $query = mysql_query($query) or die(mysql_error());
         $result = mysql_fetch_assoc($query);
-        $totalPersonStanding=+$result['number'];
+        $totalPersonStanding=$totalPersonStanding+$result['number'];
         $counter=$counter+1;
     }
-    $return=$totalPersonStanding.":".($counter-1);
-    //counter will be contains the valuw ( total no of lane +1) +1 for the last time when whiles fail
+    $return=$totalPersonStanding.":".($counter);
+    //counter will be contains the valuw ( total no of lane +1) +1 for the last time when while fails
     return($return);
 
 }
